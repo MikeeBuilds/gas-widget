@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ethereum Gas Price Widget</title>
+    <style>
+      .card {
+        background: linear-gradient(45deg, #8e44ad, #c0392b, #3498db);
+        border-radius: 10px;
+        padding: 20px;
+        width: 300px;
+        margin: 0 auto;
+        margin-top: 50px;
+        backdrop-filter: blur(10px);
+        background-clip: padding-box;
+        box-shadow: 0 9px 10px rgba(0, 0, 0, 0.15);
+      }
+
+      .card h1 {
+        color: #fff;
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Ethereum Gas Price Widget</h1>
+      <div id="gas-price"></div>
+    </div>
+
+    <script>
+      // Function to fetch and display the gas price
+      function fetchGasPrice() {
+        // Make an API request to Etherscan
+        $.getJSON("https://api.etherscan.io/api?module=gastracker&action=gasoracle", function(data) {
+          // Extract the current gas price (in Gwei) from the API response
+          var gasPrice = data.result.FastGasPrice / 10**9;
+
+          // Display the gas price in the widget
+          $("#gas-price").text("Current Gas Price: " + gasPrice + " Gwei");
+        });
+      }
+
+      // Fetch the gas price initially
+      fetchGasPrice();
+
+      // Refresh the gas price every 5 seconds
+      setInterval(fetchGasPrice, 5000);
+    </script>
+  </body>
+</html>

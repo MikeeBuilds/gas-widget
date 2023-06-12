@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html
+lang="
+"
+>
+  <head>
+    <title>Ethereum Gas Price Widget</title>
+    <style>
+      .card {
+        width: 300px;
+        margin: 0 auto;
+        margin-top: 50px;
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(
+          rgba(255, 187, 220, 0.2),
+          rgba(168, 201, 255, 0.2),
+          rgba(233, 179, 255, 0.2)
+        );
+        padding: 20px;
+        text-align: center;
+        color: #000;
+      }
+
+      .card h1 {
+        margin-top: 0;
+      }
+
+      .card p {
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Ethereum Gas Price Widget</h1>
+      <p id="gas-price">Loading...</p>
+      <p id="eth-price">Loading...</p>
+    </div>
+
+    <script>
+      async function fetchGasPrice() {
+        try {
+          const gasResponse = await fetch("https://api.etherscan.io/api?module=gastracker&action=gasoracle");
+          const gasData = await gasResponse.json();
+          const gasPrice = gasData.result.ProposeGasPrice;
+
+          const gasPriceElement = document.getElementById("gas-price");
+          gasPriceElement.textContent = "Current Gas Price: " + gasPrice + " Gwei";
+
+          const ethResponse = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd");
+          const ethData = await ethResponse.json();
+          const ethPrice = ethData.ethereum.usd;
+
+          const ethPriceElement = document.getElementById("eth-price");
+          ethPriceElement.textContent = "Current ETH Price: $" + ethPrice;
+        } catch (error) {
+          console.error("Error fetching gas price:", error);
+        }
+      }
+
+      fetchGasPrice();
+      setInterval(fetchGasPrice, 5000);
+    </script>
+  </body>
+</html>

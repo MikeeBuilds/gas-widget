@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ethereum Gas Price Widget</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <h1>Ethereum Gas Price Widget</h1>
+    <div id="gas-price"></div>
+
+    <script>
+      // Function to fetch and display the gas price
+      function fetchGasPrice() {
+        // Make an API request to ETH Gas Station
+        $.getJSON("https://ethgasstation.info/api/ethgasAPI.json", function(data) {
+          // Extract the current gas price (in Gwei) from the API response
+          var gasPrice = data.fast / 10;
+
+          // Display the gas price in the widget
+          $("#gas-price").text("Current Gas Price: " + gasPrice + " Gwei");
+        });
+      }
+
+      // Fetch the gas price initially
+      fetchGasPrice();
+
+      // Refresh the gas price every 5 seconds
+      setInterval(fetchGasPrice, 5000);
+    </script>
+  </body>
+</html>

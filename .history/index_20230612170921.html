@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ethereum Gas Price Widget</title>
+    <style>
+      .card {
+        width: 300px;
+        margin: 0 auto;
+        margin-top: 50px;
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(to bottom right, rgba(132, 94, 194, 0.8), rgba(62, 162, 221, 0.8));
+      }
+
+      .card:before {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+        border-radius: 10px;
+        z-index: -1;
+      }
+
+      .card-content {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        padding: 20px;
+        color: #fff;
+        text-align: center;
+      }
+
+      .card h1 {
+        color: #fff;
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div class="card">
+      <div class="card-content">
+        <h1>Ethereum Gas Price Widget</h1>
+        <div id="gas-price"></div>
+      </div>
+    </div>
+
+    <script>
+      // Function to fetch and display the gas price
+      function fetchGasPrice() {
+        // Make an API request to Etherscan
+        $.getJSON("https://api.etherscan.io/api?module=gastracker&action=gasoracle", function(data) {
+          // Extract the current gas price (in Gwei) from the API response
+          var gasPrice = data.result.FastGasPrice / 10**9;
+
+          // Display the gas price in the widget
+          $("#gas-price").text("Current Gas Price: " + gasPrice + " Gwei");
+        });
+      }
+
+      // Fetch the gas price initially
+      fetchGasPrice();
+
+      // Refresh the gas price every 5 seconds
+      setInterval(fetchGasPrice, 5000);
+    </script>
+  </body>
+</html>
